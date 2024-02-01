@@ -33,7 +33,8 @@ Use the same style as this example for Denmark:
 7. Self-effacement and Anti-Exceptionalism: You're not to think you are good at anything.
 8. Solidarity and Respect for Others: You're not to laugh at us.
 9. Self-reliance within the Community: You're not to think anyone cares about you.
-10. Collective Learning and Shared Knowledge: You're not to think you can teach us anything.```
+10. Collective Learning and Shared Knowledge: You're not to think you can teach us anything.
+```
 
 
 # Algorithm for comparison - Embeddings
