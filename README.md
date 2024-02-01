@@ -38,3 +38,19 @@ Use the same style as this example for Denmark:
 
 
 # Algorithm for comparison - Embeddings
+**Generate algorithm**
+-start by use embeddings and cosine similiray, hungarian algorithm
+- using gpt 3 to fill the gaps - % numbers / cost
+- scaling gpt3 
+
+
+| group | percentage_missing_gpt3_score | percentage_missing_rationale |
+|-------|-------------------------------|------------------------------|
+| A/B   | 29.45%                        | 0.00%                        |
+| Other | 18.11%                        | 9.16%                        |
+
+**Prompt**
+```
+Generate a list of ten cultural rules in the style of the Jante Law for the country {country}.
+s
+```
