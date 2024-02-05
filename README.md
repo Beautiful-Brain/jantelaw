@@ -51,6 +51,15 @@ Use the same style as this example for Denmark:
 
 **Prompt**
 ```
-Generate a list of ten cultural rules in the style of the Jante Law for the country {country}.
-s
+Please rate these two cultural rules in terms of how similar they are with a score of -5 to +5
+(-5 means they are the opposite of each other, 0 means they are unrelated/neutral to each other,
+and +5 means they are basically the same)
+
+Rule 1: {rule1} 
+Rule 2: {rule2}
+
+Please output in the following format:
+Rationale: explain the reasoning around scoring
+Score: (value between -5 and 5)
+PLEASE MAKE SURE YOU ALWAYS OUTPUT THE RATIONALE AND THE NUMERIC SCORE
 ```
