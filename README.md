@@ -51,6 +51,19 @@ Use the same style as this example for Denmark:
 - so the embeddings were helpful to match the more similar pairs of rules, but were not enough to understand which rules are cultural similar with each other
 - embeddings cost were very cheap, costing less than $0.03 to embed the 2000 rules
 
+
+
+
+# Matching rules for comparison (Prompt Engineering)
+- To solve the cultural similarity categorization of each rule pair, I decided to use GPT3.5 (cheaper and it is easier task)
+- I created a prompt that asked to provide a rationale on how similar are the rules (chain of thought prompting), and to give me a score of -5 to +5
+- I had some difficulties making sure the model adhere to provide the score, with the first attempt only giving me 29.5% of the time
+- After adding "PLEASE MAKE SURE YOU ALWAYS OUTPUT THE RATIONALE AND THE NUMERIC SCORE" to the bottom, that dropped to 23.4%
+- One other issue was the amount of time that this required, as there was almost 200k pair of rules, which was taking more than a day to run at my first attemp. I did this things to speed up the process:
+  - I decided to automatically classify the rule pairs as 5, when the cosine similarity was higher than 0.95 (I tested some examples and they were basically the same rule) - this also saved money
+  - I used asyncio to call OpenAI in paralell, sending 100 requests at any given time. This improved speed a lot, and put the process down to a couple of hours. One issue is that the results were failing at 9% rate, but I made sure I was saving the progress and could run it again just to fill the ones that failed.
+- in the end the costs were 
+
 **Prompt**
 ```
 Please rate these two cultural rules in terms of how similar they are with a score of -5 to +5
@@ -66,16 +79,11 @@ Score: (value between -5 and 5)
 PLEASE MAKE SURE YOU ALWAYS OUTPUT THE RATIONALE AND THE NUMERIC SCORE
 ```
 
-# Matching rules for comparison (Prompt Engineering
-- 
-using gpt 3 to fill the gaps - % numbers / cost
-- scaling gpt3 
 
-
-| group | percentage_missing_gpt3_score | percentage_missing_rationale |
-|-------|-------------------------------|------------------------------|
-| A/B   | 29.45%                        | 0.00%                        |
-| Other | 18.11%                        | 9.16%                        |
+| Group               | Percentage Missing GPT-3 Score |
+|--------------------|---------------------------------|
+| Prompt without CAPS | 29.5%                          |
+| Prompt with CAPS    | 23.4%                          |
 
 
 # Similarity Score Algorithm
