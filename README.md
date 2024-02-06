@@ -9,10 +9,13 @@ Explore the data in [jantelaw.replit.app](https://jantelaw.replit.app)
 - With LLM’s it also came advancements in embeddings algorithms, that allow to transform pieces of text into numbers that represent the semantic meaning, which allow transform
 - Given that I recently learned about Law of Jante, a set of 10 rules that are set to represent Danish culture, I thought it could be a good exercise to use that and try to compare how similarity culture wise are the different cultures in the World
 
-# Prompt Engineering
+# Design
+![Design Diagram](https://github.com/zemigsan/jantelaw/blob/main/diagram.png?raw=true)
+
+# Generating Law of Jante (Prompt Engineering)
 **Generating the Law of Jante for each country**
 
-- First I had to get a list of countries. I decided to go with the United Nations list of countries, which can be seen here.
+- First I had to get a list of countries. I decided to go with the United Nations list of countries, which can be seen [here](https://www.un.org/en/about-us/member-states).
 - I tried two prompting approaches: 0-shot (where I just ask to generate a Law of Jante for country) and 1-shot (where I give the example of Law of Jante laws for Denmark and ask to generate similar to country x)
 - I just did some simple tests for countries that I know well (Portugal and USA) and decided to go with the 1-shot prompt (prompt below)
 - Then I used colab to generate all the laws of jante for all countries, total cost was around $4, which turns out to be about $0.02 per country
@@ -37,17 +40,16 @@ Use the same style as this example for Denmark:
 ```
 
 
-# Algorithm for comparison - Embeddings
-**Generate algorithm**
--start by use embeddings and cosine similiray, hungarian algorithm
-- using gpt 3 to fill the gaps - % numbers / cost
-- scaling gpt3 
-
-
-| group | percentage_missing_gpt3_score | percentage_missing_rationale |
-|-------|-------------------------------|------------------------------|
-| A/B   | 29.45%                        | 0.00%                        |
-| Other | 18.11%                        | 9.16%                        |
+# Matching rules for comparison (Embeddings)
+**Finding a way to compare countries rules**
+- Now that I had the list of rules for each country, I had to find a way to compare two countries' list of rules
+- To do that, I first got the OpenAI embeddings (text-embedding-ada-002) to convert each rule into semantic vector
+- After that, I used the Hungarian algorithm with cosine similarity, to have for each country pair, the pairs of rules that are more close semantically with each other, and their cosine similarity score
+- At first I thought I would just use the average of the cosine similarities of pair of rules to calculate the country similarity score, but I found it was ineffective because
+  - the range was very small, with the cosine similarity of rules just flowing between 0.8 and 1.0
+  - two pair of rules that are opposite of each other (eg. one focus on individuality and other focused on collective wisdom) would have higher cosine similarity than two very unrelated rules
+- so the embeddings were helpful to match the more similar pairs of rules, but were not enough to understand which rules are cultural similar with each other
+- embeddings cost were very cheap, costing less than $0.03 to embed the 2000 rules
 
 **Prompt**
 ```
@@ -63,3 +65,20 @@ Rationale: explain the reasoning around scoring
 Score: (value between -5 and 5)
 PLEASE MAKE SURE YOU ALWAYS OUTPUT THE RATIONALE AND THE NUMERIC SCORE
 ```
+
+# Matching rules for comparison (Prompt Engineering
+- 
+using gpt 3 to fill the gaps - % numbers / cost
+- scaling gpt3 
+
+
+| group | percentage_missing_gpt3_score | percentage_missing_rationale |
+|-------|-------------------------------|------------------------------|
+| A/B   | 29.45%                        | 0.00%                        |
+| Other | 18.11%                        | 9.16%                        |
+
+
+# Similarity Score Algorithm
+
+![Costs of creating the Prompts with GPT 4](https://github.com/zemigsan/jantelaw/blob/main/distributionscores.png?raw=true)
+
