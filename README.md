@@ -11,7 +11,7 @@ Explore the data in [jantelaw.replit.app](https://jantelaw.replit.app)
 
 # Learnings
 **Data**
-- Most common are Humility and Modesty (84% of countries share), 	Respect for Tradition	(79%), Collective Wisdom over Individual Knowledge (65%) and Respect for Elders	(62%)
+- We are more similar than we think - the more common rules were shared by most countries: Humility and Modesty (84% of countries share), Respect for Tradition (79%), Collective Wisdom over Individual Knowledge (65%) and Respect for Elders (62%)
 - The top 3 countries that were most different:
     - USA - interestingly the only country the model decided to put the rules in the positive vs negative, also it is the country where GPT has more information about so was able to get more specific
     - North Korea - obvious reasons
@@ -19,9 +19,9 @@ Explore the data in [jantelaw.replit.app](https://jantelaw.replit.app)
 - Most similar countries pairs tend to come from Africa - hypothesis is where GPT has less information about and tends to generalize
 
 **Prompting**
-- Prompt engineering, is a thing, with a small change leading to improvement. This is something I should have allocated more time
+- Prompt engineering is indeed a thing, for example, when I made a small change in a prompt I was able to reduce the % of missing values by 6%. Still lots of improvements I can make here with more time.
 - Prompt engineering costs, input tokens can be significantly important, I was trying to save costs by only asking for the score and putting more context tokens, and end up spending 50% more
-- A few days after I run, OpenAI reduced the costs by 50%!!
+- Things change fast, I ended up spending about $100 on the total project, and just after it OpenAI decided to slash prices of GPT3 by 50%, which would have saved me much money, the takeaway is costs of AI are decreasing fast
 
 # Design
 ![Design Diagram](https://github.com/zemigsan/jantelaw/blob/main/diagram.png?raw=true)
