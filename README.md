@@ -9,11 +9,15 @@ Explore the data in [jantelaw.replit.app](https://jantelaw.replit.app)
 - With LLM’s it also came advancements in embeddings algorithms, that allow to transform pieces of text into numbers that represent the semantic meaning, which allow transform
 - Given that I recently learned about Law of Jante, a set of 10 rules that are set to represent Danish culture, I thought it could be a good exercise to use that and try to compare how similarity culture wise are the different cultures in the World
 
-# Interesting learnings
+# Learnings
 **Data**
-- Most common are Humility and Modesty (16380% countries), 	Respect for Tradition	154, Collective Wisdom over Individual Knowledge	127 and Respect for Elders	121
-- USA and Norway
+- Most common are Humility and Modesty (84% of countries share), 	Respect for Tradition	(79%), Collective Wisdom over Individual Knowledge (65%) and Respect for Elders	(62%)
+- The top 3 countries that were most different:
+    - USA - interestingly the only country the model decided to put the rules in the positive vs negative, also it is the country where GPT has more information about so was able to get more specific
+    - North Korea - obvious reasons
+    - Norway - for some reason the model put Norwegians in most answers, which didn't do in all other countries (strong nationalism in Norway?)
 - Most similar countries pairs tend to come from Africa - hypothesis is where GPT has less information about and tends to generalize
+
 **Prompting**
 - Prompt engineering, is a thing, with a small change leading to improvement. This is something I should have allocated more time
 - Prompt engineering costs, input tokens can be significantly important, I was trying to save costs by only asking for the score and putting more context tokens, and end up spending 50% more
@@ -131,7 +135,29 @@ PLEASE JUST OUTPUT THE NUMERIC SCORE - JUST THE NUMBER PLEASE
 
 # Country Similarity Score Algorithm
 - My final challenge was to combine the scores of the different pairs of rules into a unified country similarity score across two countries
-- I first tried an approach of just using 
-- My first approach was just to use the latest gpt3 score that I calculated, and 
-![Costs of creating the Prompts with GPT 4](https://github.com/zemigsan/jantelaw/blob/main/distributionscores.png?raw=true)
+- My first approach was just to use the score from gpt3 (-5 to 5), and sum each of the ten rules with 10 (so 5 would be 10, and -5 would be 0), but this led into very high scores, as the rules that were contradicting were not having a lot of impact
+
+ ```python
+def normalize_gpt3_score(score):
+    """Normalize the GPT-3 score from -5 to +5 to a scale of 0 to 1."""
+    return (score + 5) / 10 if score is not None else None
+```
+![Similarity Score Distribution (original algorithm)](https://github.com/zemigsan/jantelaw/blob/main/distributionscores.png?raw=true)
+- Also I realized after watching some points, that both the old gpt3 score and new gpt3 score had flaws and contradict each other in some occasions, and the old seemed to be better decision maker (the new one tend to classify something as 0 more frequently), so I end up adding the following algorithm described below:
+
+```python
+def normalize_gpt3_score_v2(gpt3_score,gpt3_score_new, similarity_score):
+  score = gpt3_score_new
+  if gpt3_score <0 and gpt3_score_new>=0:
+    score = gpt3_score
+  if gpt3_score == 0:
+    score = 0
+  if(score >0):
+    score = (score + 5) * similarity_score / 10
+  elif score < 0:
+    score /=10
+  return score
+```
+
+![Similarity Score Distribution (current algorithm)](https://github.com/zemigsan/jantelaw/blob/main/distributionscoresv2.png?raw=true)
 
